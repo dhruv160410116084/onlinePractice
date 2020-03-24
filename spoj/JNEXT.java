@@ -18,51 +18,40 @@ class JNEXT
                 int N = Integer.parseInt(st.nextToken());
                 int arr[] = new int[N];
                 st = new StringTokenizer(br.readLine());
-                boolean flag = false;
                 for(int i=0;i<N;i++){
                     arr[i] =Integer.parseInt(st.nextToken());
                 }
-                
-                int a=arr[N-1];
-                int b =0;
-                int d1=0;
-                for(int i=N-2;i>=0;i--){
-                    b=arr[i];
-                    if(b<a){
-                        d1=i;
-                        flag = true;
+                int i=0;
+                for(i= N-1;i>0;i--){
+                    if(arr[i]>arr[i-1])
                         break;
-                    }else
-                        a=b;
                 }
-                if(flag){
-                    int temp = arr[d1];
-                    int diff = 0;
-                    int min_diff = 0;
-                    int d2=0;
-                    for(int i=d1+1;i<N;i++){
-                        diff = arr[i] - arr[d1];
-                        if(i == d1+1){
-                            min_diff = diff;
-                            d2 = i;
-                        }
-                        else if(diff >-1 && min_diff>diff){
-                            min_diff = diff;
-                            d2 = i;
+                if(i<=0)
+                    sb.append(-1+"\n");
+                else{
+                    int x = arr[i-1],min = i;
+                    int j=0;
+                    // for( j=i+1;j<N;j++){
+                    //     if(arr[j] > x && arr[j] < arr[min]){
+                    //         min = j;
+                    //     }
+                    // }
+                    int temp = arr[i-1];
+                    arr[i-1] = arr[min];
+                    arr[min] = temp;
+                    for(int k=i,d=1;k<N;k++,d++){
+                        if(k != N-d){
+                            
+                            int t = arr[k];
+                            arr[k] = arr[N-d];
+                            arr[N-d] = t;
                         }
                     }
-                    int temp_ = arr[d1];
-                    arr[d1] = arr[d2];
-                    arr[d2]=temp_;
-    
-                    Arrays.sort(arr,d1+1,arr.length);
-                    String s =print(arr);
-                    sb.append(s+"\n");
-    
-    
+                    
+                    sb.append(print(arr)+"\n");
                 }
-                else 
-                sb.append(-1+"\n");
+                
+             
 
                 
                 
@@ -71,7 +60,7 @@ class JNEXT
 	        
 	        br.close();
 	    }catch(Exception e){
-	        // System.out.println(e);
+	        System.out.println(e);
 	    }
     }
 
