@@ -1,40 +1,39 @@
 import java.util.*;
 import java.io.*;
 
+//solved but with the help of gfg
+
 class InfixToPostfix {
     public static void main(String[] args) throws Exception {
-        Scanner scan = new Scanner(System.in);
-        String exp = scan.next();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+       int T = Integer.parseInt(st.nextToken());
         StringBuilder sb = new StringBuilder();
         Stack<Character> stack = new Stack<Character>();
 
+        while(T-- != 0){
+            st =new StringTokenizer(br.readLine());
+        String exp = st.nextToken();
         for(int i=0;i<exp.length();i++){
 
             if(Character.isAlphabetic(exp.charAt(i))){
 
                 sb.append(exp.charAt(i));
 
-            }else if ( exp.charAt(i) == '(' ||
-                         stack.isEmpty() || 
-                            getPrecedence(stack.peek()) < getPrecedence(exp.charAt(i)) ){
+            }else if ( exp.charAt(i) == '(' ){
                 stack.push(exp.charAt(i));
                 
-            }else {
-                    boolean flag = false;
-                    if(exp.charAt(i) == ')')
-                        flag = true;
-                while (  (  exp.charAt(i) == ')'  &&   !stack.isEmpty()  &&  stack.peek() != '('  ) ^  
-                       (  exp.charAt(i) != ')' && exp.charAt(i)!= '('       &&   !stack.isEmpty()  &&      getPrecedence(stack.peek()) >= getPrecedence(exp.charAt(i)) ) ){
-                    char c = stack.pop();
-                    if(c != '(' && c != ')')
-                    sb.append(c);
-                }
-                if(flag){
+            }else if( exp.charAt(i) == ')'){
+                while(!stack.isEmpty() && stack.peek() != '(')
+                    sb.append(stack.pop());
+                if(!stack.isEmpty() && stack.peek() == '(')
                     stack.pop();
-                
-                }else
-                    i--;
-
+            }else{
+                while(!stack.isEmpty() && getPrecedence(exp.charAt(i)) <= getPrecedence(stack.peek())){
+                    if(stack.peek() != '(')
+                        sb.append(stack.pop());
+                }
+                stack.push(exp.charAt(i));
             }
         }
         while (!stack.isEmpty()) {
@@ -44,6 +43,10 @@ class InfixToPostfix {
                 sb.append(c);
                 
         }
+        sb.append("\n");
+        }
+
+        
 
         System.out.println(sb);
 
